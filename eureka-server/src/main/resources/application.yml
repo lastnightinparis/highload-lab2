@@ -1,0 +1,33 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  instance:
+    hostname: eureka-server
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 30
+    prefer-ip-address: true
+
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+  server:
+    enable-self-preservation: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: ALWAYS

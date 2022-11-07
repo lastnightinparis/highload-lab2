@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+  eureka-server:
+    image: highload-lab2/eureka-server
+    hostname: eureka-server
+    ports:
+      - "8761:8761"
+
+  config-server:
+    image: highload-lab2/config-server
+    hostname: config-server
+    ports:
+      - "8100:8100"
+    links:
+      - "eureka-server"
+    volumes:
+      - ./config-server/src/main/resources/config:/app/config
+
+  order-service:
+    image: highload-lab2/order-service
+    hostname: order-service
+    ports:
+      - "8081:8081"
+    links:
+      - "eureka-server"
+      - "config-server"
+
+  spring-gateway:
+    image: highload-lab2/spring-gateway
+    hostname: spring-gateway
+    ports:
+      - "8080:8080"
+    links:
+      - "eureka-server"
+      - "config-server"
+      - "order-service"
+
+

@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: docker
+  application:
+    name: spring-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: testRoute
+          uri: http://order-service:8081/
+          predicates:
+            - Path=/test/**
+
+eureka:
+  instance:
+    hostname: spring-gateway
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: ALWAYS
+
